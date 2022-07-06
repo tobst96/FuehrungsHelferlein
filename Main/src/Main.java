@@ -1,33 +1,33 @@
+import Moduls.Lagemeldung;
+import Moduls.WindowsNotification;
+
 import java.awt.*;
-import java.awt.TrayIcon.MessageType;
+import java.io.IOException;
+import java.util.logging.*;
 
 public class Main {
-
+    private static final long FILE_SIZE = 1024;
+    public static Logger log = Logger.getLogger(Main.class.getName());
     public static void main(String[] args) throws AWTException {
-        if (SystemTray.isSupported()) {
-            Main td = new Main();
-            td.displayTray();
-        } else {
-            System.err.println("System tray not supported!");
+        try {
+            FileHandler handler = new FileHandler("current.log", 1024, 5, true);
+            handler.setFormatter(new SimpleFormatter());
+            handler.setLevel(Level.ALL);
+            log.addHandler(handler);
+            log.setUseParentHandlers(false);
+            ConsoleHandler hnd = new ConsoleHandler();
+            hnd.setLevel(Level.ALL);
+            log.addHandler(hnd);
+        } catch (IOException var17) {
+            log.warning("Failed to initialize logger handler.");
+        }
+        new Lagemeldung();
+
+        log.info("Timestamp: " + Lagemeldung.getTimestamp());
+        Lagemeldung.runInit();
+        while(true) {
+            Lagemeldung.run();
         }
     }
 
-    public void displayTray() throws AWTException {
-        //Obtain only one instance of the SystemTray object
-        SystemTray tray = SystemTray.getSystemTray();
-
-        //If the icon is a file
-        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
-        //Alternative (if the icon is on the classpath):
-        //Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("icon.png"));
-
-        TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
-        //Let the system resize the image if needed
-        trayIcon.setImageAutoSize(true);
-        //Set tooltip text for the tray icon
-        trayIcon.setToolTip("System tray icon demo");
-        tray.add(trayIcon);
-
-        trayIcon.displayMessage("Hello, World", "notification demo", MessageType.INFO);
-    }
 }
