@@ -1,6 +1,6 @@
 /.idea/
 /Main/src/META-INF/
-config.ini
+nfig.ini
 *.log
 *.log.0
 *.log.1
