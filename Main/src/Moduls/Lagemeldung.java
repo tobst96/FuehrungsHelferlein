@@ -18,8 +18,8 @@ import org.json.simple.JSONObject;
 public class Lagemeldung {
     public static Logger log = Logger.getLogger(Main.class.getName());
     public static Long IntervallAbfrage = Long.valueOf(10);
-    public Long Erhöhen = Long.valueOf(2);
-    public Long Maximal = Long.valueOf(30);
+    public static Long Erhöhen = Long.valueOf(0);
+    public static Long Maximal = Long.valueOf(30);
     public static Long Abfragen = Long.valueOf(30);
 
     public static JSONObject obj = new JSONObject();
@@ -34,6 +34,7 @@ public class Lagemeldung {
         Iterator output = val.iterator();
         while(output.hasNext()) {
             if(output.next().equals(timenow)){
+                log.info("Lagemeldung geben!");
                 WindowsNotification.displayInfo("Lagemeldung", "Fordere eine Lagemeldung an!");
             }
         }
@@ -48,7 +49,7 @@ public class Lagemeldung {
         return returnval;
     }
 
-    public void readConfig(){
+    public static void readConfig(){
         Properties prop = new Properties();
         String fileName = "config.ini";
         try (FileInputStream fis = new FileInputStream(fileName)) {
@@ -79,7 +80,7 @@ public class Lagemeldung {
         Integer counter = 1;
         while(counter < Abfragen){
             counter = counter + 1;
-            nextTS = getTimestamp() + minToSec(Math.toIntExact(IntervallAbfrage));
+            nextTS = nextTS + minToSec(Math.toIntExact(Erhöhen));
             list.add(nextTS);
         }
 

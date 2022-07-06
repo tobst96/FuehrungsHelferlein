@@ -1,5 +1,6 @@
 /.idea/
 /Main/src/META-INF/
+config.ini
 *.log
 *.log.0
 *.log.1

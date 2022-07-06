@@ -1,5 +1,7 @@
+import Moduls.DiveraStatus;
 import Moduls.Lagemeldung;
 import Moduls.WindowsNotification;
+import org.json.simple.parser.ParseException;
 
 import java.awt.*;
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.util.logging.*;
 public class Main {
     private static final long FILE_SIZE = 1024;
     public static Logger log = Logger.getLogger(Main.class.getName());
-    public static void main(String[] args) throws AWTException {
+    public static void main(String[] args) throws AWTException, ParseException, IOException {
         try {
             FileHandler handler = new FileHandler("current.log", 1024, 5, true);
             handler.setFormatter(new SimpleFormatter());
@@ -27,6 +29,7 @@ public class Main {
         Lagemeldung.runInit();
         while(true) {
             Lagemeldung.run();
+            new DiveraStatus();
         }
     }
 
