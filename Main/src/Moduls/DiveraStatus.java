@@ -42,7 +42,7 @@ public class DiveraStatus {
                     //chechDiff(responetextALT, issiEinh1, nameEinh1, statusEinh1, tsEinh1);
                     //System.out.println(Lagemeldung.getTimestamp());
                     //System.out.println(tsEinh1 * 1000);
-                    if(Lagemeldung.getTimestamp() <= tsEinh1 * 1000){
+                    if(Lagemeldung.getTimestamp() - 2000 <= tsEinh1 * 1000){
                         System.out.println("Timestamp gleich");
                         System.out.println(nameEinh1);
                         System.out.println(statusEinh1);
