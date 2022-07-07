@@ -2,6 +2,8 @@
 /Main/src/META-INF/
 nfig.ini
 *.log
+*.json
+*.json5
 *.log.0
 *.log.1
 *.log.2
