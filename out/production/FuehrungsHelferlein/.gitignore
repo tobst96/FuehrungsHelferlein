@@ -1,9 +1,8 @@
 /.idea/
 /Main/src/META-INF/
-config.ini
+nfig.ini
 *.log
 *.json
-*.json5
 *.json5
 *.log.0
 *.log.1
