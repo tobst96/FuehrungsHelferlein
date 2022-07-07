@@ -8,7 +8,8 @@ config.ini
 *.log.3
 *.log.4
 *.lck
-
+config.json
 /out/production/
 /out/production/FuehrungsHelferlein/
 /out/artifacts/FuehrungsHelferlein_jar/lastStaus.json
+lastStaus.json
