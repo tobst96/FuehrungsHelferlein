@@ -23,6 +23,7 @@ public class Main {
         } catch (IOException var17) {
             log.warning("Failed to initialize logger handler.");
         }
+        WindowsNotification.displayInfo("Start", "v0.0.1");
         new Lagemeldung();
 
         log.info("Timestamp: " + Lagemeldung.getTimestamp());
