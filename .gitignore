@@ -9,3 +9,4 @@ config.ini
 *.log.4
 *.lck
 
+/out/production/
