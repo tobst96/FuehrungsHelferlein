@@ -24,3 +24,5 @@ lastStaus.json
 
 
 /META-INF/
+*.json
+config.json
