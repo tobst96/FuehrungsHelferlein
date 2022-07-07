@@ -43,14 +43,14 @@ public class DiveraStatus {
                     //System.out.println(Lagemeldung.getTimestamp());
                     //System.out.println(tsEinh1 * 1000);
                     if(Lagemeldung.getTimestamp() - 2000 <= tsEinh1 * 1000){
-                        System.out.println("Timestamp gleich");
-                        System.out.println(nameEinh1);
-                        System.out.println(statusEinh1);
+                        //System.out.println("Timestamp gleich");
+                        System.out.println(statusEinh1 + " | " + nameEinh1 + " | " + issiEinh1);
+                        //System.out.println(statusEinh1);
                         if(statusEinh1 == 3){
                             WindowsNotification.displayWarning("Stärke Abfrage", nameEinh1);
                         }
                         if(statusEinh1 == 6){
-                            WindowsNotification.displayWarning("Nicht Einsatzbereit", nameEinh1);
+                            WindowsNotification.displayError("Nicht Einsatzbereit", nameEinh1);
                         }
                     }
                 }
