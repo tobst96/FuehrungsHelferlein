@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -19,7 +20,11 @@ public class DiveraStatus {
 
 
     public DiveraStatus() throws ParseException, IOException, AWTException {
-        String responetext = RequetsGet.requetsData("https://app.divera247.com/api/v2/pull/vehicle-status?accesskey=" + "6v9joeAXCj5A8QlWVaGBxVhjUewuIQ8XYIcD4LCc2_cx2Dpco9pi35r8cw3we1ob");
+        Object ob = new JSONParser().parse(new FileReader("config.json"));
+        JSONObject js = (JSONObject) ob;
+        JSONObject DiveraConfig = (JSONObject) js.get("Divera");
+        String url = "https://app.divera247.com/api/v2/pull/vehicle-status?accesskey=" + ((String) DiveraConfig.get("token"));
+        String responetext = RequetsGet.requetsData(url);
         Iterator responetextlist = diveraDataList(responetext);
 
         //Prüfe auf gleichheit

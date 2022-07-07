@@ -53,8 +53,8 @@ public class Main {
                 }
 
 
-            } catch (Exception e){
-                log.warning((Supplier<String>) e);
+            } catch (IOException e){
+                e.printStackTrace();
             }
         }
     }
