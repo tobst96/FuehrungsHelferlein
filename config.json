@@ -1,4 +1,5 @@
 {"Lagemeldung" : {
+  "Aktivieren" : "True",
   "Intervall" : 5,
   "Erhöhen" : 2,
   "Maximal" : 30,
