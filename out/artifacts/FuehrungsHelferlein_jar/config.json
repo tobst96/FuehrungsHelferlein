@@ -1,0 +1,10 @@
+{"Lagemeldung" : {
+  "Intervall" : 5,
+  "Erhöhen" : 2,
+  "Maximal" : 30,
+  "Abfragen" : 30
+},
+  "Divera" : {
+  "token" : ""
+}
+}
