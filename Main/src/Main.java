@@ -5,6 +5,7 @@ import org.json.simple.parser.ParseException;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.function.Supplier;
 import java.util.logging.*;
 
 public class Main {
@@ -14,12 +15,14 @@ public class Main {
         try {
             FileHandler handler = new FileHandler("current.log", 1024, 5, true);
             handler.setFormatter(new SimpleFormatter());
-            handler.setLevel(Level.ALL);
-            log.addHandler(handler);
+            handler.setLevel(Level.FINEST);
             log.setUseParentHandlers(false);
+            log.addHandler(handler);
+
             ConsoleHandler hnd = new ConsoleHandler();
-            hnd.setLevel(Level.ALL);
+            hnd.setLevel(Level.FINEST);
             log.addHandler(hnd);
+
         } catch (IOException var17) {
             log.warning("Failed to initialize logger handler.");
         }
@@ -29,8 +32,12 @@ public class Main {
         log.info("Timestamp: " + Lagemeldung.getTimestamp());
         Lagemeldung.runInit();
         while(true) {
-            Lagemeldung.run();
-            new DiveraStatus();
+            try {
+                Lagemeldung.run();
+                new DiveraStatus();
+            } catch (Exception e){
+                log.warning((Supplier<String>) e);
+            }
         }
     }
 
