@@ -11,3 +11,4 @@ config.ini
 
 /out/production/
 /out/production/FuehrungsHelferlein/
+/out/artifacts/FuehrungsHelferlein_jar/lastStaus.json
