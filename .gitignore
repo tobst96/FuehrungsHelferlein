@@ -10,3 +10,4 @@ config.ini
 *.lck
 
 /out/production/
+/out/production/FuehrungsHelferlein/
