@@ -1,17 +1,15 @@
 import Moduls.DiveraStatus;
 import Moduls.Lagemeldung;
-import Moduls.WindowsNotification;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.logging.*;
 
 
@@ -19,20 +17,30 @@ public class Main {
     private static final long FILE_SIZE = 1024;
     public static Logger log = Logger.getLogger(Main.class.getName());
     public static void main(String[] args) throws AWTException, ParseException, IOException {
+        FileHandler fileHandler;
         try {
-            FileHandler handler = new FileHandler("current.log", 1024, 5, true);
-            handler.setFormatter(new SimpleFormatter());
-            handler.setLevel(Level.FINEST);
-            log.setUseParentHandlers(false);
-            log.addHandler(handler);
+            fileHandler = new FileHandler("current.log");
+            log.addHandler(fileHandler);
+            log.setLevel(Level.FINER);
+            SimpleFormatter simpleFormatter = new SimpleFormatter();
+            fileHandler.setFormatter(simpleFormatter);
+            log.info("Log to test");
 
-            ConsoleHandler hnd = new ConsoleHandler();
-            hnd.setLevel(Level.FINEST);
-            log.addHandler(hnd);
-
-        } catch (IOException var17) {
-            log.warning("Failed to initialize logger handler.");
+        } catch (SecurityException e) {
+            log.info("Exception:" + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            log.info("IO Exception:" + e.getMessage());
+            e.printStackTrace();
         }
+        log.info("Hi In the main class");
+        ConsoleHandler hnd = new ConsoleHandler();
+        hnd.setLevel(Level.FINEST);
+        log.addHandler(hnd);
+
+
+
+
         //WindowsNotification.displayInfo("Start", "v0.0.1");
         new Lagemeldung();
 

@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,7 +27,7 @@ public class Lagemeldung {
 
     public static JSONObject obj = new JSONObject();
 
-    public static void runInit(){
+    public static void runInit() throws IOException {
         genJobLost();
     }
 
