@@ -56,7 +56,11 @@ public class ConfigToJson {
                 if(e.getSource() == Save) {
                     System.out.println("Übernehmen");
                     LageConfig.put("Intervall", Long.parseLong(Lagemeldung_Intervall.getText()));
-                    LageConfig.put("Erhöhen", Long.parseLong(Lagemeldung_Erhoehen.getText()));
+                    if(Lagemeldung_Erhoehen.getText() == "0"){
+                        LageConfig.put("Erhöhen", 0);
+                    }else {
+                        LageConfig.put("Erhöhen", Long.parseLong(Lagemeldung_Erhoehen.getText()));
+                    }
                     LageConfig.put("Maximal", Long.parseLong(Lagemeldung_Maximal.getText()));
                     LageConfig.put("Abfragen", Long.parseLong(Lagemeldung_Abfragen.getText()));
 

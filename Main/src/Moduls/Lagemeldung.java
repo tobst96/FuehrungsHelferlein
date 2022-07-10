@@ -6,7 +6,10 @@ import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.FileHandler;
@@ -20,9 +23,9 @@ import org.json.simple.JSONObject;
 
 public class Lagemeldung {
     public static Logger log = Logger.getLogger(Main.class.getName());
-    public static Long IntervallAbfrage = Long.valueOf(10);
-    public static Long Erhöhen = Long.valueOf(0);
-    public static Long Maximal = Long.valueOf(30);
+    public static Long IntervallAbfrage = Long.valueOf(1);
+    public static Long Erhöhen = Long.valueOf(1);
+    public static Long Maximal = Long.valueOf(2);
     public static Long Abfragen = Long.valueOf(30);
 
     public static JSONObject obj = new JSONObject();
@@ -36,7 +39,11 @@ public class Lagemeldung {
         JSONArray val = (JSONArray) obj.get("Lagemeldung");
         Iterator output = val.iterator();
         while(output.hasNext()) {
-            if(output.next().equals(timenow)){
+            SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss");
+            String timeStamp = date.format(getTimestamp());
+            //System.out.println("Current Time Stamp: "+date.format(output.next()));
+            //System.out.println(date.format(getTimestamp()) + " - " + date.format(output.next()));
+            if(date.format(output.next()).equals(date.format(getTimestamp())) ){
                 log.info("Lagemeldung geben!");
                 WindowsNotification.displayInfo("Lagemeldung", "Fordere eine Lagemeldung an!");
             }
@@ -77,13 +84,15 @@ public class Lagemeldung {
         //Erster Timestamp ermitteln
         Long nextTS = getTimestamp() + minToSec(Math.toIntExact(IntervallAbfrage));
         list.add(nextTS);
-        log.info("Erste Ausführung: " + nextTS);
+        SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss");
+        log.info("Erste Ausführung: " + date.format(nextTS));
+        String ersteausfürhung = date.format(nextTS);
 
         //Die nächsten Timestamp berechnen
         Integer counter = 1;
         while(counter < Abfragen){
             counter = counter + 1;
-            nextTS = nextTS + minToSec(Math.toIntExact(Erhöhen));
+            nextTS = nextTS + minToSec(Math.toIntExact(Erhöhen)) + minToSec(Math.toIntExact(IntervallAbfrage));
             list.add(nextTS);
         }
 
