@@ -20,6 +20,8 @@ public class ConfigToJson {
     private JTextField Lagemeldung_Maximal;
     private JTextField Lagemeldung_Abfragen;
     private JTextField Divera_Token_1;
+    private JCheckBox status3CheckBox;
+    private JCheckBox status6CheckBox;
 
     public ConfigToJson() throws IOException, ParseException {
         Object ob = new JSONParser().parse(new FileReader("config.json"));
@@ -30,6 +32,16 @@ public class ConfigToJson {
             LageMeldungAktivieren.setSelected(true);
         } else {
             LageMeldungAktivieren.setSelected(false);
+        }
+        if(Objects.equals((String) DiveraConfig.get("status6"), "True")) {
+            status3CheckBox.setSelected(true);
+        } else {
+            status3CheckBox.setSelected(false);
+        }
+        if(Objects.equals((String) DiveraConfig.get("status6"), "True")) {
+            status6CheckBox.setSelected(true);
+        } else {
+            status6CheckBox.setSelected(false);
         }
         Lagemeldung_Intervall.setText(String.valueOf((Long) LageConfig.get("Intervall")));
         Lagemeldung_Erhoehen.setText(String.valueOf((Long) LageConfig.get("Erhöhen")));
@@ -48,6 +60,8 @@ public class ConfigToJson {
                   System.out.println("False");
                   LageConfig.put("Aktivieren", "False");
               }
+
+
             }
         });
         Save.addActionListener(new ActionListener() {
@@ -77,9 +91,34 @@ public class ConfigToJson {
                 }
             }
         });
+        status3CheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(status3CheckBox.isSelected()){
+                    System.out.println("True");
+                    DiveraConfig.put("status3", "True");
+                } else {
+                    System.out.println("False");
+                    DiveraConfig.put("status3", "False");
+                }
+            }
+        });
+        status6CheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(status6CheckBox.isSelected()){
+                    System.out.println("True");
+                    DiveraConfig.put("status6", "True");
+                } else {
+                    System.out.println("False");
+                    DiveraConfig.put("status6", "False");
+                }
+            }
+        });
     }
 
     public static void main(String[] args) throws IOException, ParseException {
+
         JFrame frame = new JFrame ("Config");
         frame.setContentPane (new ConfigToJson().GibLagemeldungAus);
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);

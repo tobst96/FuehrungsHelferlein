@@ -14,7 +14,7 @@ config.json
 /out/production/
 /out/production/FuehrungsHelferlein/
 /out/artifacts/FuehrungsHelferlein_jar/lastStaus.json
-lastStaus.json
+lastStatus.json
 /out/artifacts/config.ini
 /out/artifacts/config.json
 /out/artifacts/curent.log.0

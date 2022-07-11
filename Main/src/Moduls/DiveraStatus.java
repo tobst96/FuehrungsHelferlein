@@ -7,13 +7,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,8 +32,10 @@ public class DiveraStatus {
         Iterator responetextlist = diveraDataList(responetext);
 
         //Prüfe auf gleichheit
-        Path of = Path.of("lastStaus.json");
+        Path of = Path.of("lastStatus.json");
         String responetextALT = null;
+        JSONArray slogarray = null;
+        JSONObject slogjson = null;
         try {
             responetextALT = Files.readString(of, StandardCharsets.UTF_8);
             if (responetext.equals(responetextALT)) {
@@ -52,50 +53,55 @@ public class DiveraStatus {
                     //chechDiff(responetextALT, issiEinh1, nameEinh1, statusEinh1, tsEinh1);
                     //System.out.println(Lagemeldung.getTimestamp());
                     //System.out.println(tsEinh1 * 1000);
-                    if(Lagemeldung.getTimestamp() - 2000 <= tsEinh1 * 1000){
+                    if (Lagemeldung.getTimestamp() - 2000 <= tsEinh1 * 1000) {
                         //System.out.println("Timestamp gleich");
                         System.out.println(statusEinh1 + " | " + nameEinh1 + " | " + issiEinh1);
                         //System.out.println(statusEinh1);
-                        if(statusEinh1 == 3){
-                            WindowsNotification.displayWarning("Stärke Abfrage", nameEinh1);
+                        Object slog = new JSONParser().parse(new FileReader("statuslog.json"));
+                        slogjson = (JSONObject) slog;
+                        slogarray = (JSONArray) ((JSONObject) slog).get("History");
+                        JSONObject statusJSON = new JSONObject();
+                        statusJSON.put("Name", nameEinh1);
+                        statusJSON.put("Status", statusEinh1);
+                        statusJSON.put("ISSI", issiEinh1);
+                        statusJSON.put("TS", tsEinh1);
+
+                        slogarray.add(statusJSON);
+                        slogjson.put("History", slogarray);
+                        try (PrintWriter outStatus = new PrintWriter(new FileWriter("statuslog.json"))) {
+                            outStatus.write(slogjson.toString());
+                        } catch (Exception f) {
+                            f.printStackTrace();
                         }
-                        if(statusEinh1 == 6){
-                            WindowsNotification.displayError("Nicht Einsatzbereit", nameEinh1);
+
+                        if (statusEinh1 == 3) {
+                            if (Objects.equals((String) DiveraConfig.get("status3"), "True")) {
+                                WindowsNotification.displayWarning("Stärke Abfragen", nameEinh1);
+                                log.info(("Stärke Abfragen: " + nameEinh1));
+                            }
+                        }
+                        if (statusEinh1 == 6) {
+                            if (Objects.equals((String) DiveraConfig.get("status6"), "True")) {
+                                WindowsNotification.displayError("Nicht Einsatzbereit", nameEinh1);
+                                ;
+                                log.info(("Nicht Einsatzbereit: " + nameEinh1));
+                            }
+
                         }
                     }
                 }
             }
         } catch (Exception e) {
-            log.warning("lastStats.json nicht anngelegt. Wird nun Angelegt!");
+            log.warning("lastStatus.json nicht anngelegt. Wird nun Angelegt!");
             Files.writeString(of, (CharSequence) responetext, StandardCharsets.UTF_8);
+            if (slogjson == null) {
+                Files.writeString(Path.of("statuslog.json"), "", StandardCharsets.UTF_8);
+            } else {
+                Files.writeString(Path.of("statuslog.json"), slogarray.toString(), StandardCharsets.UTF_8);
+            }
         }
 
         Files.writeString(of, (CharSequence) responetext, StandardCharsets.UTF_8);
-    }
-
-    private void chechDiff(String responetextALT, String issiEinh1, String nameEinh1, Long statusEinh1, Long tsEinh1) throws ParseException, AWTException {
-        Iterator responetextlistAlt = diveraDataList(responetextALT);
-        while (responetextlistAlt.hasNext()) {
-            JSONObject slide3 = (JSONObject) responetextlistAlt.next();
-            String issiEinh2 = (String) slide3.get("issi");
-            String nameEinh2 = (String) slide3.get("name");
-            Long statusEinh2 = (Long) slide3.get("fmsstatus");
-            Long tsEinh2 = (Long) slide3.get("fmsstatus_ts");
-            //System.out.println("ISSI1: " + issiEinh1 + " ISSI2: " + issiEinh2 );
-            if (issiEinh1.equals(issiEinh2)) {
-                log.info("ISSI gleich: " + issiEinh1 + " - " + issiEinh2);
-                if (tsEinh1 != tsEinh2) {
-                    log.info("Timestamp ist unterschiedlich");
-                    WindowsNotification.displayInfo(nameEinh1, "Status: " + statusEinh1);
-                    //log.info("Einheit1: " + String.valueOf(statusEinh1) + "E inheit2: " + String.valueOf(statusEinh2) );
-                    if (statusEinh1.equals("3")){
-                        WindowsNotification.displayWarning("Stärke Abfragen", nameEinh1);
-                        log.info(("Stärke Abfragen: " + nameEinh1));
-                    }
-                }
-            }
-
-        }
     }
 
     public static Iterator diveraDataList(String responeText) throws ParseException {
