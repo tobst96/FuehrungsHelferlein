@@ -6,6 +6,8 @@
   "Abfragen" : 30
 },
   "Divera" : {
-  "token" : ""
+  "token" : "",
+    "status3": "True",
+    "status6": "True"
 }
 }
