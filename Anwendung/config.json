@@ -1,13 +1,1 @@
-{"Lagemeldung" : {
-  "Aktivieren" : "True",
-  "Intervall" : 5,
-  "Erhöhen" : 2,
-  "Maximal" : 30,
-  "Abfragen" : 30
-},
-  "Divera" : {
-  "token" : "",
-    "status3": "True",
-    "status6": "True"
-}
-}
+{"Lagemeldung":{"Aktivieren":"True","Maximal":30,"Erhöhen":2,"Intervall":5,"Abfragen":30},"Divera":{"status6":"True","status3":"True","token":""}}
