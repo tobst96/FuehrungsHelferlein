@@ -22,6 +22,7 @@ public class ConfigToJson {
     private JTextField Divera_Token_1;
     private JCheckBox status3CheckBox;
     private JCheckBox status6CheckBox;
+    private JTextField diverasync;
 
     public ConfigToJson() throws IOException, ParseException {
         Object ob = new JSONParser().parse(new FileReader("config.json"));
@@ -48,6 +49,7 @@ public class ConfigToJson {
         Lagemeldung_Maximal.setText(String.valueOf((Long) LageConfig.get("Maximal")));
         Lagemeldung_Abfragen.setText(String.valueOf((Long) LageConfig.get("Abfragen")));
         Divera_Token_1.setText((String) DiveraConfig.get("token"));
+        diverasync.setText((String) DiveraConfig.get("tokensync"));
 
 
         LageMeldungAktivieren.addActionListener(new ActionListener() {
@@ -79,6 +81,10 @@ public class ConfigToJson {
                     LageConfig.put("Abfragen", Long.parseLong(Lagemeldung_Abfragen.getText()));
 
                     DiveraConfig.put("token", Divera_Token_1.getText());
+                    js.put("Lagemeldung", LageConfig);
+                    js.put("Divera", DiveraConfig);
+
+                    DiveraConfig.put("tokensync", diverasync.getText());
                     js.put("Lagemeldung", LageConfig);
                     js.put("Divera", DiveraConfig);
 
